@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
-import { MONGO_URL } from '../utils/constants';
+import { MONGO_URL } from './utils/constants';
 
 const app = express();
 
@@ -27,4 +27,6 @@ server.listen(8080, () => {
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
-mongoose.connection.on('error', (error: Error) => console.error(`There was an error connecting to MongoDB: ${error}`));
+mongoose.connection.on('error', (error: Error) => {
+    console.error(`There was an error connecting to MongoDB: ${error}`)
+});
