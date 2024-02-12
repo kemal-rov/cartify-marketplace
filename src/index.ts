@@ -29,7 +29,7 @@ server.listen(8080, () => {
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
 mongoose.connection.on('error', (error: Error) => {
-    console.error(`There was an error connecting to MongoDB: ${error}`)
+    console.error(`There was an error connecting to MongoDB: ${error.message}`)
 });
 
-app.use('/', router);
+app.use('/', router());
