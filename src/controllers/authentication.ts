@@ -32,7 +32,7 @@ export const login = async (req: express.Request, res: express.Response) =>  {
 
         res.cookie('AUTH_TOKEN', user.authentication.sessionToken, { domain: 'localhost', path: '/' });
 
-        return res.sendStatus(200).json(user).end();
+        return res.status(200).json(user).end();
     } catch (error) {
         console.error(`There was an error with the user logging in: ${error}`);
         return res.sendStatus(400);
