@@ -5,5 +5,5 @@ import { deleteUser } from '../controllers/users';
 
 export default (router: express.Router) => {
     router.get('/users', isAuthenticated, getAllUsers);
-    router.get('/users/:id', isOwner, deleteUser);
+    router.delete('/users/:id', isOwner, deleteUser);
 }
