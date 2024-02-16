@@ -18,7 +18,7 @@ app.use(cors({
 
 app.use(compression());
 app.use(cookieParser());
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 const server = http.createServer(app);
 
