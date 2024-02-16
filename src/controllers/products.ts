@@ -6,6 +6,8 @@ import {
     productExistsByName,
     createProduct } from '../db/products'
 
+    // TODO
+    // patch product, delete product by id
 
 export const getProducts = async (req: express.Request, res: express.Response) => {
     const { category } = req.query;
@@ -68,5 +70,22 @@ export const addProduct = async (req: express.Request, res: express.Response) =>
     } catch (error) {
         console.error(`Failed to add product: ${error.message}`);
         return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const updateProduct = async (req: express.Request, res: express.Response) => {
+    try {
+        const { id } = req.params;
+        // const { userId } = req.user._id; 
+
+        const product = await getProductById(id);
+
+        // if (!product.createdBy.equals(userId)) {
+        //     return res.status(403).json({ message: 'You do not have permission to update this product' });
+        // }
+
+        return res.status(200).json(product).end();
+    } catch (error) {
+        console.error(`Something went wrong updating product: ${error.response}`);
     }
 };
