@@ -80,6 +80,15 @@ This will launch the Cartify Marketplace backend on the specified port, ready to
 
 > **Important warning:** For the application to connect to your MongoDB database correctly, you must provide your own MongoDB URI in the .env file and use it in your constants as shown above. Failure to do so will result in database connection errors. If you need assistance with setting up your MongoDB cluster or configuring your project, feel free to reach out to the project maintainer.
 
+## API Documentation
+
+Postman collection is provided to help you get started with the API quickly. You can [download the Postman collection here](./postman/Cartify.postman_collection.json).
+
+To use this collection:
+1. Download [Postman](https://www.postman.com/downloads/).
+2. Import the collection by clicking on "Import" > "File" > "Upload Files" and select the downloaded collection file.
+3. Start exploring the API!
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
