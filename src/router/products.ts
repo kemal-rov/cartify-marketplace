@@ -2,7 +2,6 @@ import express from 'express';
 
 import { isAuthenticated } from '../middleware';
 import { getProducts, getProductDetails, addProduct, updateProduct, deleteProduct } from '../controllers/products';
-import { deleteUser } from 'controllers/users';
 
 export default (router: express.Router) => {
     router.get('/products', isAuthenticated, getProducts);
