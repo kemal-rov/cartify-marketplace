@@ -7,7 +7,7 @@ const ProductSchema = new mongoose.Schema({
     stock: { type: Number, required: true },
     categories: [{ type: String }],
     images: [{ type: String }],
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    created_by: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now }
 });

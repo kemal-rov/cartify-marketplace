@@ -1,13 +1,12 @@
 import express from 'express';
+import { getUserBySessionToken } from '../db/users';
 import { 
     getAllProducts, 
     getProductById, 
     getProductsByCategory, 
     productExistsByName,
-    createProduct } from '../db/products'
-
-    // TODO
-    // patch product, delete product by id
+    createProduct,
+    updateProductById } from '../db/products'
 
 export const getProducts = async (req: express.Request, res: express.Response) => {
     const { category } = req.query;
@@ -49,24 +48,34 @@ export const getProductDetails = async (req: express.Request, res: express.Respo
 };
 
 export const addProduct = async (req: express.Request, res: express.Response) => {
-    const { name, description, price, stock, categories, images } = req.body;
-
-    if (!name || !description || typeof price !== 'number' || typeof stock !== 'number') {
-        console.error('Name, description is missing or price, stock is not a number')
-        return res.status(400).json({ message: "Missing or invalid fields" });
-    }
-
     try {
-        // Check if the product already exists
+        const sessionToken = req.cookies.AUTH_TOKEN; 
+        
+        if (!sessionToken) {
+            return res.status(403).json({ message: "Session token is required" });
+        }
+
+        const user = await getUserBySessionToken(sessionToken);
+
+        if (!user) {
+            return res.status(403).json({ message: "Invalid session token" });
+        }
+
+        const { name, description, price, stock, categories, images } = req.body;
+
+        if (!name || !description || typeof price !== 'number' || typeof stock !== 'number') {
+            console.error('Name, description is missing or price, stock is not a number');
+            return res.status(400).json({ message: "Missing or invalid fields" });
+        }
+
         const exists = await productExistsByName(name);
         if (exists) {
             return res.status(409).json({ message: "Product already exists" });
         }
 
-        // Create the new product if it doesn't exist
-        const newProduct = await createProduct({ name, description, price, stock, categories, images });
+        const newProduct = await createProduct({ name, description, price, stock, categories, images, created_by: user._id });
 
-        return res.status(201).json(newProduct);
+        return res.status(201).json(newProduct).end();
     } catch (error) {
         console.error(`Failed to add product: ${error.message}`);
         return res.status(500).json({ message: "Internal server error" });
@@ -76,16 +85,35 @@ export const addProduct = async (req: express.Request, res: express.Response) =>
 export const updateProduct = async (req: express.Request, res: express.Response) => {
     try {
         const { id } = req.params;
-        // const { userId } = req.user._id; 
+        const sessionToken = req.cookies.AUTH_TOKEN;
+
+        if (!sessionToken) {
+            return res.status(403).json({ message: "Session token is required" });
+        }
+
+        const user = await getUserBySessionToken(sessionToken);
+
+        if (!user) {
+            return res.status(403).json({ message: "Invalid session token" });
+        }
 
         const product = await getProductById(id);
 
-        // if (!product.createdBy.equals(userId)) {
-        //     return res.status(403).json({ message: 'You do not have permission to update this product' });
-        // }
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
 
-        return res.status(200).json(product).end();
+        if (!product.created_by.equals(user._id)) {
+            return res.status(403).json({ message: "You do not have permission to update this product" });
+        }
+
+        const { name, description, price, stock, categories, images } = req.body;
+
+        const updatedProduct = await updateProductById(id, { name, description, price, stock, categories, images });
+
+        return res.status(200).json(updatedProduct).end();
     } catch (error) {
-        console.error(`Something went wrong updating product: ${error.response}`);
+        console.error(`Something went wrong updating product: ${error.message}`);
+        return res.status(500).json({ message: "Internal server error" });
     }
 };
