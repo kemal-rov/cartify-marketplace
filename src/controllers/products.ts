@@ -6,7 +6,8 @@ import {
     getProductsByCategory, 
     productExistsByName,
     createProduct,
-    updateProductById } from '../db/products'
+    updateProductById,
+    deleteProductById } from '../db/products'
 
 export const getProducts = async (req: express.Request, res: express.Response) => {
     const { category } = req.query;
@@ -114,6 +115,40 @@ export const updateProduct = async (req: express.Request, res: express.Response)
         return res.status(200).json(updatedProduct).end();
     } catch (error) {
         console.error(`Something went wrong updating product: ${error.message}`);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const deleteProduct = async (req: express.Request, res: express.Response) => {
+    try {
+        const { id } = req.params;
+        const sessionToken = req.cookies.AUTH_TOKEN;
+
+        if (!sessionToken) {
+            return res.status(403).json({ message: "Session token is required" });
+        }
+
+        const user = await getUserBySessionToken(sessionToken);
+
+        if (!user) {
+            return res.status(403).json({ message: "Invalid session token" });
+        }
+
+        const product = await getProductById(id);
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        if (!product.created_by.equals(user._id)) {
+            return res.status(403).json({ message: "You do not have permission to delete this product" });
+        }
+
+        await deleteProductById(id);
+
+        return res.status(204).send().end();
+    } catch (error) {
+        console.error(`Something went wrong deleting product: ${error.message}`);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
