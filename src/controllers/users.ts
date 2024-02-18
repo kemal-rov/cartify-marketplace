@@ -5,10 +5,10 @@ export const getAllUsers = async (req: express.Request, res: express.Response) =
     try {
         const users = await getUsers();
 
-        return res.status(200).json(users);
+        return res.status(200).json(users).end();
     } catch (error) {
         console.error(`There was an issue getting all users: ${error.message}`);
-        return res.sendStatus(400);
+        return res.status(400).json({ message: "An error occured getting users" });
     }
 }
 
@@ -20,6 +20,7 @@ export const deleteUser = async (req: express.Request, res: express.Response) =>
         return res.status(200).json(deletedUser).end();
     } catch (error) {
         console.error(`Something went wrong with deleting a user: ${error.message}`);
+        return res.status(500).json({ message: "Internal server error"} );
     }
 }
 
@@ -30,7 +31,7 @@ export const updateUser = async (req: express.Request, res: express.Response) =>
 
         if (!username) {
             console.error('No username found.');
-            return res.sendStatus(400);
+            return res.status(400).json({ message: "An error occured - no username found"});
         }
 
         const user = await getUserById(id);
@@ -41,6 +42,6 @@ export const updateUser = async (req: express.Request, res: express.Response) =>
         return res.status(200).json(user).end();
     } catch (error) {
         console.error(`Something went wrong updating the user: ${error.message}`);
-        return res.sendStatus(400);
+        return res.status(400).json("An error happened updating the user");
     }
 }
