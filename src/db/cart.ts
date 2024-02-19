@@ -15,6 +15,7 @@ const CartSchema = new mongoose.Schema({
 export const CartModel = mongoose.model('Cart', CartSchema);
 
 export const getCartByUserId = (userId: string) => CartModel.findOne({ user: userId });
+
 export const addItemToCart = async (userId: string, itemId: string, quantity: number) => {
     const cart = await getCartByUserId(userId) || new CartModel({ user: userId, items: [] });
     const itemIndex = cart.items.findIndex(item => item.product.toString() === itemId);
@@ -37,23 +38,18 @@ export const removeItemFromCart = async (userId: string, itemId: string) => {
     return cart.save();
 };
 export const clearCart = (userId: string) => CartModel.findOneAndDelete({ user: userId });
-export const updateItemQuantity = async (userId: string, itemId: string, quantity: number) => {
+
+export const updateItemQuantity = async (userId: string, itemId: string, newQuantity: number) => {
     const cart = await getCartByUserId(userId);
-    if (!cart) return;
+    if (!cart) throw new Error("Cart not found");
 
-    const itemIndex = cart.items.findIndex(item => item.product.toString() === itemId);
-    if (itemIndex > -1) {
-        cart.items[itemIndex].quantity = quantity;
-        cart.markModified('items'); // Notifying Mongoose that the 'items' array has been modified
-    }
+    const item = cart.items.find(item => item._id.toString() === itemId);
+    if (!item) throw new Error("Item not found in cart");
 
-    cart.updated_at = new Date();
+    item.quantity = newQuantity;
 
-    try {
-        await cart.save();
-      } catch (error) {
-        console.error("Error saving the cart:", error);
-        throw error; // Rethrow or handle as needed
-      }
+    cart.markModified('items');
+    await cart.save();
+
     return cart;
 };

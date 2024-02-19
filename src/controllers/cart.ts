@@ -63,9 +63,13 @@ export const updateItemQuantityController = async (req: express.Request, res: ex
     try {
         const { userId, itemId } = req.params;
         const { quantity } = req.body;
-    
-        const cart = await getCartByUserId(userId);
 
+        console.log(quantity)
+
+        if (typeof quantity !== 'number' || quantity < 1) {
+            return res.status(400).json({ message: "Invalid quantity provided. Quantity must be at least 1." });
+        }
+    
         const updatedCart = await updateItemQuantity(userId, itemId, quantity);
         res.status(200).json(updatedCart);
     } catch (error) {
