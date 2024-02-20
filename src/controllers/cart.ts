@@ -61,16 +61,14 @@ export const addItemToCartController = async (req: express.Request, res: express
 
 export const updateItemQuantityController = async (req: express.Request, res: express.Response) => {
     try {
-        const { userId, itemId } = req.params;
+        const { userId, productId } = req.params;
         const { quantity } = req.body;
-
-        console.log(quantity)
 
         if (typeof quantity !== 'number' || quantity < 1) {
             return res.status(400).json({ message: "Invalid quantity provided. Quantity must be at least 1." });
         }
     
-        const updatedCart = await updateItemQuantity(userId, itemId, quantity);
+        const updatedCart = await updateItemQuantity(userId, productId, quantity);
         res.status(200).json(updatedCart);
     } catch (error) {
         console.error(`Error updating item quantity: ${error.message}`);
@@ -79,10 +77,10 @@ export const updateItemQuantityController = async (req: express.Request, res: ex
 };
 
 export const removeItemFromCartController = async (req: express.Request, res: express.Response) => {
-    const { userId, itemId } = req.params;
+    const { userId, productId } = req.params;
 
     try {
-        const updatedCart = await removeItemFromCart(userId, itemId);
+        const updatedCart = await removeItemFromCart(userId, productId);
 
         res.status(200).json(updatedCart);
     } catch (error) {

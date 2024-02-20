@@ -1,9 +1,9 @@
 import express from 'express';
-import { getCartByUserId, addItemToCart } from '../db/cart';
+import { getCartByUserId } from '../db/cart';
 
 export const validateCartOperation = ({ checkQuantity = false, checkItemExists = false } = {}) => 
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const { userId, itemId } = req.params;
+        const { userId, productId } = req.params;
         const { quantity } = req.body;
 
         // Validate quantity if required
@@ -13,13 +13,15 @@ export const validateCartOperation = ({ checkQuantity = false, checkItemExists =
 
         // Always check for cart existence
         const cart = await getCartByUserId(userId);
+
         if (!cart) {
             return res.status(404).json({ message: "Cart not found." });
         }
 
         // Check if the item exists in the cart if required
-        if (checkItemExists && itemId) {
-            const itemExists = cart.items.some(item => item._id.toString() === itemId);
+        if (checkItemExists && productId) {
+            const itemExists = cart.items.some(item => item.product.toString() === productId);
+
             if (!itemExists) {
                 return res.status(404).json({ message: "Item not found in cart." });
             }

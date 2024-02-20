@@ -23,14 +23,14 @@ export default (router: express.Router) => {
     router.get('/users/:userId/cart', isAuthenticated, verifyUserMatch, getCart);
 
     router.patch(
-        '/users/:userId/cart/items/:itemId', 
+        '/users/:userId/cart/items/:productId', 
         isAuthenticated, 
         verifyUserMatch, 
         validateCartOperation({ checkQuantity: true, checkItemExists: true }),
         updateItemQuantityController);
 
     router.delete(
-        '/users/:userId/cart/items/:itemId', 
+        '/users/:userId/cart/items/:productId', 
         isAuthenticated, 
         verifyUserMatch, 
         validateCartOperation({ checkItemExists: true }),
