@@ -89,6 +89,51 @@ To use this collection:
 2. Import the collection by clicking on "Import" > "File" > "Upload Files" and select the downloaded collection file.
 3. Start exploring the API!
 
+## Features Overview
+
+Cartify Marketplace offers a wide range of features designed to enhance the e-commerce experience for both users and administrators. Below are the highlights of product management and cart functionalities.
+
+### Product Management
+
+- **Product Creation:** Allows administrators to add new products to the marketplace.
+- **Product Updates:** Admins can update existing product details to keep the catalog up-to-date.
+- **Product Deletion:** Products can be removed from the marketplace when they are no longer available.
+- **Product Browsing:** Users can browse through the catalog of products, filtering by categories, price ranges, and more.
+
+#### Product API Endpoints
+
+- POST `/products`: Create a new product.
+- GET `/products`: Retrieve a list of products.
+- GET `/products?category=${categoryName}`: Retrieve a list of products of a particular category.
+- GET `/products/:productId`: Get detailed information about a specific product.
+- PATCH `/products/:productId`: Update an existing product.
+- DELETE `/products/:productId`: Remove a product from the marketplace.
+
+
+#### Cart Management
+
+- **Add Items to Cart:** Users can add products to their shopping cart, specifying the desired quantity.
+- **Update Item Quantities:** Users can adjust the quantity of items in their cart, allowing for flexibility before checkout.
+- **Remove Items from Cart:** Specific items can be removed from the cart, providing users control over their potential purchases.
+- **Clear Cart:** Users have the option to clear their cart, effectively removing all items in preparation for a new shopping session.
+- **View Cart:** Users can view the current contents of their cart, including item details and quantities.
+
+
+#### Cart API Endpoints
+
+- POST `/users/:userId/cart/items`: Add an item to the cart.
+- PATCH `/users/:userId/cart/items/:productId`: Update the quantity of an existing cart item.
+- DELETE `/users/:userId/cart/items/:productId`: Remove an item from the cart.
+- DELETE `/users/:userId/cart`: Clear the cart of all items.
+- GET `/users/:userId/cart`: Retrieve the contents of the cart.
+
+
+#### Implementation Notes
+
+- **Security and Authentication:** Both product and cart functionalities implement strict authentication and authorization checks to ensure secure access to sensitive operations.
+- **Scalability:** Designed with scalability in mind, the marketplace supports a growing catalog of products and user base without compromising performance.
+- **User Experience:** The seamless integration between product browsing and cart management offers users a fluid and intuitive shopping experience.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
