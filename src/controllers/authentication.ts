@@ -39,6 +39,26 @@ export const login = async (req: express.Request, res: express.Response) =>  {
     }
 }
 
+export const logout = async (req: express.Request, res: express.Response) => {
+    try {
+        const user = (req as any).identity;
+
+        user.authentication.sessionToken = '' // Invalidate token
+        await user.save();
+
+        // set expires to Unix epoch
+        res.cookie('AUTH_TOKEN', '', { expires: new Date(0), domain: 'localhost', path: '/' });
+        
+        return res.status(200).json({ 
+            user: user.username,
+            message: "Logout successful",
+            timestamp: new Date() });
+    } catch (error) {
+        console.error(`There was an error logging out: ${error}`);
+        return res.status(500).json({ message: "A server error occurred during logout." });
+    }
+}
+
 export const register = async (req: express.Request, res: express.Response) => {
     try {
         const { email, password, username } = req.body;
