@@ -22,13 +22,10 @@ const OrderSchema = new Schema({
         zip: String,
     },
     // myb adding tracking no. and payment details in the future
-});
+},
+{ timestamps: true });
 
 export const Order = model('Order', OrderSchema);
-
-export const declareModule = async (itemId: User, price: number) => {
-    console.log(itemId)
-}
 
 export const getOrderById = async (orderId: mongoose.Types.ObjectId) => {
     return Order.findById(orderId).populate('items.product');
