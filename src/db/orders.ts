@@ -21,7 +21,6 @@ const OrderSchema = new Schema({
         country: String,
         zip: String,
     },
-    // myb adding tracking no. and payment details in the future
 },
 { timestamps: true });
 
