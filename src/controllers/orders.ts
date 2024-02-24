@@ -3,6 +3,23 @@ import { Order } from '../db/orders';
 import { getProductById } from '../db/products';
 import { IOrderItem } from '../utils/types';
 
+export const getUserOrdersController = async (req: express.Request, res: express.Response) => {
+    try {
+        const userId = (req as any).identity._id;
+        
+        const userOrders = await Order.find({ user: userId }).populate('items.product');
+
+        if (!userOrders.length) {
+            return res.status(404).json({ message: "No orders found for this user." });
+        }
+
+        return res.status(200).json(userOrders);
+    } catch (error) {
+        console.error(`Failed to retrieve user orders: ${error}`);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 export const getOrderByIdController = async (req: express.Request, res: express.Response) => {
     try {
         const { orderId } = req.params;
