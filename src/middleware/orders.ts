@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { ICartItem, IOrderItem } from '../utils/types'; 
 import { getCartByUserId } from '../db/cart';
-import { getOrderById } from '../db/orders';
+import { Order, getOrderById } from '../db/orders';
 
 export const attachUserCart = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const userId = (req as any).identity._id;
@@ -61,4 +61,56 @@ export const validateOrderAgainstCart = async (req: express.Request, res: expres
     }
 
     next();
+};
+
+export const validateOrderUpdate = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const { orderId } = req.params;
+    const path = req.path; 
+
+    try {
+        const order = await Order.findById(orderId);
+
+        if (!order) {
+            return res.status(404).json({ message: "Order not found." });
+        }
+
+        let updateType = '';
+        if (path.includes('/cancel')) {
+            updateType = 'cancel';
+        } else if (path.includes('/ship')) {
+            updateType = 'ship';
+        }
+
+        switch (updateType) {
+            case 'cancel':
+                if (['shipped', 'delivered'].includes(order.status)) {
+                    return res.status(400).json({ message: "Shipped or delivered orders cannot be cancelled." });
+                }
+                if (order.status === 'cancelled') {
+                    return res.status(400).json({ message: "Order is already cancelled." });
+                }
+                break;
+            
+            case 'ship':
+
+                if (order.status === 'shipped') {
+                    return res.status(400).json({ message: "Order is already shipped." });
+                }
+                if (order.status !== 'paid') {
+                    return res.status(400).json({ message: "Only paid orders can be shipped." });
+                }
+                break;
+
+            default:
+                return res.status(400).json({ message: "Invalid update type." });
+        }
+                
+        // Attach order to the request object
+        (req as any).order = order;
+
+        next();
+    } catch (error) {
+        console.error(`Validation failed: ${error}`);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 };
