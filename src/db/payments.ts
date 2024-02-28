@@ -5,7 +5,7 @@ interface PaymentDetail {
   status: 'pending' | 'completed' | 'failed' | 'refunded';
   amount: number;
   transactionId?: string; // Optional for tracking payment gateway transaction IDs
-  payerId?: string; // Optional, used for PayPal and other payment methods requiring payer identification
+  payerId?: string; // Optional for payment methods requiring payer identification
   paymentDate: Date;
 }
 
