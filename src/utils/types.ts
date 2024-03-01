@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { OrderStatus, PaymentMethod } from './enums';
 
   export interface IProduct {
     _id: mongoose.Types.ObjectId;
@@ -49,9 +50,9 @@ import mongoose from 'mongoose';
     user: mongoose.Types.ObjectId;
     items: IOrderItem[];
     total: number;
-    status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
+    status: OrderStatus;
     createdAt: Date;
-    paymentMethod: 'credit_card' | 'paypal' | 'stripe' | 'cash_on_delivery';
+    paymentMethod: PaymentMethod;
     shippingAddress: {
       street: string;
       city: string;
