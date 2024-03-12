@@ -93,7 +93,7 @@ To use this collection:
 
 Cartify Marketplace offers a wide range of features designed to enhance the e-commerce experience for both users and administrators. Below are the highlights of product management and cart functionalities.
 
-### Product Management
+### Products
 
 - **Product Creation:** Allows administrators to add new products to the marketplace.
 - **Product Updates:** Admins can update existing product details to keep the catalog up-to-date.
@@ -110,7 +110,7 @@ Cartify Marketplace offers a wide range of features designed to enhance the e-co
 - DELETE `/products/:productId`: Remove a product from the marketplace.
 
 
-#### Cart Management
+### Cart
 
 - **Add Items to Cart:** Users can add products to their shopping cart, specifying the desired quantity.
 - **Update Item Quantities:** Users can adjust the quantity of items in their cart, allowing for flexibility before checkout.
@@ -127,6 +127,32 @@ Cartify Marketplace offers a wide range of features designed to enhance the e-co
 - DELETE `/users/:userId/cart`: Clear the cart of all items.
 - GET `/users/:userId/cart`: Retrieve the contents of the cart.
 
+### Orders
+
+The Orders feature allows users to process their shopping carts into finalized purchases, providing options for tracking and managing orders post-creation.
+
+- **Create Order:** Converts the contents of a user's cart into an order, initializing the purchase process.
+- **View Order Details:** Users can access detailed information about their orders, including items purchased, quantities, and status.
+- **Order Cancellation:** Provides the option for users to cancel an order before it is shipped.
+- **Order Updates:** Allows admins to update the status of an order, such as marking it as shipped.
+#### Order API endpoints
+
+- POST `/orders/create`: Create a new order object for the particular user.
+- GET `/orders/:orderId`: Get order based on orderId.
+- GET `/orders`: Get all orders for authenticated user.
+- PATCH `/orders/:orderId/cancel`: Update the status of an order to "cancelled".
+- PATCH `/orders/:orderId/cancel`: Update the status of an order to "shipped".
+
+### Payments
+
+The Payments feature facilitates secure financial transactions within the Cartify Marketplace, offering users a streamlined process for completing purchases and administrators a method to manage these transactions.
+
+- ***Process Payment:** Enables users to securely pay for their orders, supporting various payment methods for convenience.
+- **View Payment Details:** Allows both users and administrators to retrieve detailed information about individual payment transactions.
+
+#### Payment API Endpoints
+- POST `/payments/create`: Initiates a payment process for an order. This endpoint typically requires details such as order ID, payment method, and transaction amount.
+- GET `/payments/:paymentId`: Retrieves detailed information about a specific payment transaction by its ID.
 
 #### Implementation Notes
 
