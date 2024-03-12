@@ -151,7 +151,7 @@ The Payments feature facilitates secure financial transactions within the Cartif
 - **View Payment Details:** Allows both users and administrators to retrieve detailed information about individual payment transactions.
 
 #### Payment API Endpoints
-- POST `/payments`: Initiates a payment process for an order. This endpoint typically requires details such as order ID, payment method, and transaction amount.
+- POST `/payments/create`: Initiates a payment process for an order. This endpoint typically requires details such as order ID, payment method, and transaction amount.
 - GET `/payments/:paymentId`: Retrieves detailed information about a specific payment transaction by its ID.
 
 #### Implementation Notes
