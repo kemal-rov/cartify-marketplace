@@ -21,30 +21,37 @@ describe('Authentication Tests', () => {
 
         expect(response.status).toBe(200);
         expect(response.data.email).toBe(email);
-        });
+    });
 
     afterAll(async() => {
         // Delete the user
-        await axios.delete(`${url}/users/${userId}`);
-
-        const response = await axios.post(`${url}/auth/login`);
-        expect(response.status).toBe(403);
-        
-    });
-  
-    it('should login the user', async () => {
-        // First, make sure the user is logged out
-        await axios.post(`${url}/auth/logout`);
-
-        const response = await axios.post(`${url}/auth/logout`, {}, {
+        await axios.delete(`${url}/users/${userId}`, {
             headers: {
             Cookie: `AUTH_TOKEN=${userToken}`, 
             },
         });
 
-        expect(response.status).toBe(200);
-        expect(response.data).toHaveProperty('authentication.sessionToken');
-        userToken = response.data.authentication.sessionToken; // Save the token for logout test
+        const response = await axios.post(`${url}/auth/login`);
+        expect(response.status).toBe(403);
+    });
+  
+    it('should login the user', async () => {
+        // First, make sure the user is logged out
+        const logout: AxiosResponse = await axios.post(`${url}/auth/logout`, {}, {
+            headers: {
+            Cookie: `AUTH_TOKEN=${userToken}`, 
+            },
+        });
+
+        expect(logout.status).toBe(200 || 403);
+        expect(logout.data.message).toBe("Logout successful" || undefined);
+
+        const login: AxiosResponse = await axios.post(`${url}/auth/login`, {
+            email: email,
+            password: password,
+        });
+        expect(login.status).toBe(200);
+        expect(login.data).toHaveProperty('authentication.sessionToken');
     });
   
     it('should logout the user', async () => {
