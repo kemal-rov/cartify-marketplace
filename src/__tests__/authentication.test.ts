@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { email, username, password } from '../utils/data.json';
+import { generateUniqueEmail, generateUniqueUsername } from '../helpers/dataGenerator';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,13 +12,15 @@ describe('Authentication Tests', () => {
     beforeAll(async() => {
         // Create a new user
         const response: AxiosResponse = await axios.post(`${url}/auth/register`, {
-            email: email,
+            email: generateUniqueEmail(email),
             password: password,
-            username: username,
+            username: generateUniqueUsername(username),
         });
 
         userToken = response.data.authentication.sessionToken
         userId = response.data._id;
+
+        console.log(`user token: ${userToken}\nuser id: ${userId}`);
 
         expect(response.status).toBe(200);
         expect(response.data.email).toBe(email);
