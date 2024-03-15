@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { email, username, password } from '../src/utils/data.json';
+import { email, username, password } from '../utils/data.json';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
