@@ -19,6 +19,7 @@
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.14.202",
     "@types/mongoose": "^5.11.97",
+    "axios-cookiejar-support": "^5.0.0",
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -30,12 +31,14 @@
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.1",
     "nodemon": "^3.0.3",
+    "tough-cookie": "^4.1.3",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@types/chance": "^1.1.6",
+    "@types/tough-cookie": "^4.0.5",
     "axios": "^1.6.7",
     "chance": "^1.1.11"
   }
