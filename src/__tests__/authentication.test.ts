@@ -75,7 +75,7 @@ describe('Authentication Tests', () => {
     try {
       await axiosInstance.post(`${url}/auth/login`, {
         email: newEmail,
-        password: 'wrongpassword', // Incorrect password
+        password: 'wrongpassword',
       });
       fail('Expected login with incorrect password to fail');
     } catch (error) {
