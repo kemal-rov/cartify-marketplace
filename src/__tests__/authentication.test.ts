@@ -31,7 +31,7 @@ describe('Authentication Tests', () => {
     // Create a new user
     const response = await axiosInstance.post(`${url}/auth/register`, {
       email: newEmail,
-      password: password,
+      password,
       username: newUsername,
     });
 
@@ -43,10 +43,7 @@ describe('Authentication Tests', () => {
 
   afterAll(async () => {
     // First, log in as that user
-    const loginResponse = await axiosInstance.post(`${url}/auth/login`, {
-      email: newEmail,
-      password: password,
-    });
+    await axiosInstance.post(`${url}/auth/login`, {email: newEmail, password});
 
     // Then, delete the user
     const deletedUser = await axiosInstance.delete(`${url}/users/${userId}`);
@@ -58,7 +55,7 @@ describe('Authentication Tests', () => {
     try {
       await axiosInstance.post(`${url}/auth/register`, {
         email: newEmail,
-        password: password,
+        password,
         username: newUsername,
       });
       fail('Expected duplicate registration to fail with 400 status code');
@@ -117,10 +114,7 @@ describe('Authentication Tests', () => {
 
   it('should logout the user', async () => {
     // Ensure there's a session to logout from by logging in first
-    await axiosInstance.post(`${url}/auth/login`, {
-      email: newEmail,
-      password: password,
-    });
+    await axiosInstance.post(`${url}/auth/login`, { email: newEmail, password });
 
     const logoutResponse = await axiosInstance.post(`${url}/auth/logout`);
     expect(logoutResponse.status).toBe(200);
