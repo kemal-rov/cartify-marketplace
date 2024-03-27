@@ -22,7 +22,7 @@ jobs:
       - name: Wait for the server to be ready
         run: |
           echo "Waiting for server to be ready..."
-          until $(curl --output /dev/null --silent --fail http://localhost:8080); do
+          until $(curl --output /dev/null --silent --fail http://127.0.0.1:8080); do
             printf '.'
             sleep 5
           done
@@ -31,4 +31,4 @@ jobs:
         run: npm test
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }} 
-          BASE_URL: http://localhost:8080
+          BASE_URL: http://127.0.0.1:8080
