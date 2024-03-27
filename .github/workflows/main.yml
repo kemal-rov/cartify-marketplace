@@ -1,41 +1,21 @@
 name: Integration Tests
 on: [push]
-
 jobs:
-  Explore-GitHub-Actions:
+  build:
     runs-on: ubuntu-latest
-    services:
-      mongodb:
-        image: mongo
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongo --eval 'db.runCommand({ping: 1})'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      
-      - name: Set up Node.js
+      - uses: actions/checkout@v4
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
       - name: Install dependencies
-        run: npm install
-      
-      - name: Start application in the background
+        run: npm ci
+      - name: Start the application in the background
         run: npm start &
-      
-      - name: Wait for the application to start
-        run: sleep 7
-      
-      - name: Run tests
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }} 
+      - name: Run integration tests
         run: npm test
-      
-      - name: Kill the Node.js application
-        if: always()
-        run: kill $(jobs -p) || true
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }} 
