@@ -23,9 +23,8 @@ jobs:
 
       - name: Wait for server to be ready
         run: |
-          url=${{ secrets.BASE_URL_LOCAL }}
           timeout=30  # Maximum number of seconds to wait
-          while ! curl --output /dev/null --silent --fail $url; do
+          while ! curl --output /dev/null --silent --fail ${{ env.BASE_URL_LOCAL }}; do
             sleep 1
             timeout=$((timeout-1))
             if [ "$timeout" -le 0 ]; then
@@ -33,6 +32,8 @@ jobs:
               exit 1
             fi
           done
+        env:
+          BASE_URL_LOCAL: ${{ secrets.BASE_URL_LOCAL }}
       
       - name: Run integration tests
         run: npm test
