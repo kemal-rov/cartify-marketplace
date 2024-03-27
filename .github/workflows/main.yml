@@ -20,6 +20,9 @@ jobs:
       
       - name: Start the application in the background
         run: npm start &
+
+      - name: Wait for server to be ready
+        run: sleep 10 
       
       - name: Run integration tests
         run: npm test
