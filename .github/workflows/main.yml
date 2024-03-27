@@ -3,6 +3,10 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }} 
+      MONGO_KEY: ${{ secrets.MONGO_KEY }} 
+      BASE_URL_LOCAL: ${{secrets.BASE_URL_LOCAL}}
     steps:
       - uses: actions/checkout@v4
       
@@ -16,21 +20,14 @@ jobs:
       
       - name: Start the application in the background
         run: npm start &
-        env:
-          AUTH_SECRET: ${{ secrets.AUTH_SECRET }} 
-          MONGO_KEY: ${{ secrets.MONGO_KEY }} 
-          BASE_URL_LOCAL: ${{secrets.BASE_URL_LOCAL}}
-                
-      # - name: Wait for the server to be ready
-      #   run: |
-      #     echo "Waiting for server to be ready..."
-      #     until $(curl --output /dev/null --silent --fail http://127.0.0.1:8080); do
-      #       printf '.'
-      #       sleep 5
-      #     done
+    
+      - name: Wait for the server to be ready
+        run: |
+          echo "Waiting for server to be ready..."
+          until curl --output /dev/null --silent --fail $BASE_URL_LOCAL; do
+            printf '.'
+            sleep 5
+          done
       
       - name: Run integration tests
         run: npm test
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }} 
-          BASE_URL: http://127.0.0.1:8080
