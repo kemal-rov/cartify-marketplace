@@ -23,8 +23,6 @@ jobs:
 
       - name: Wait for server to be ready
         run: sleep 7
-        env:
-          BASE_URL_LOCAL: ${{ secrets.BASE_URL_LOCAL }}
       
       - name: Run integration tests
         run: npm test
