@@ -18,11 +18,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Start the application in the background
-        run: npm start &
-
-      - name: Wait for server to be ready
-        run: sleep 7
+      - name: Start the application
+        run: |
+          npm start &
+          echo "Waiting for server to be ready..."
+          until $(curl --output /dev/null --silent --head --fail ${BASE_URL_LOCAL}); do
+              printf '.'
+              sleep 1
+          done
+          echo "Server is ready"
       
       - name: Run integration tests
         run: npm test
