@@ -6,7 +6,7 @@ jobs:
     env:
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }} 
       MONGO_KEY: ${{ secrets.MONGO_KEY }} 
-      BASE_URL_LOCAL: ${{secrets.BASE_URL_LOCAL}}
+      BASE_URL_LOCAL: "http://localhost:8080"
     steps:
       - uses: actions/checkout@v4
       
