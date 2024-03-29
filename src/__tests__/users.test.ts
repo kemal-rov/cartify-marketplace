@@ -1,5 +1,5 @@
 import { axiosInstance, setupTestUser, cleanupTestUser } from '../utils';
-import { generateUniqueEmail, generateUniqueUsername } from '../helpers/dataGenerator';
+import { generateUniqueEmail, generateUniqueName } from '../helpers/dataGenerator';
 import { email, username, password } from '../utils/data.json';
 import { TestUserSetup } from 'utils/types';
 
@@ -7,7 +7,7 @@ describe('User Integration Tests', () => {
   let userDeleted: boolean = false; // Flag for hooks
   let setupInfo: TestUserSetup;
   const newEmail = generateUniqueEmail(email);
-  const newUsername = generateUniqueUsername(username);
+  const newUsername = generateUniqueName(username);
 
   beforeAll(async () => {
     setupInfo = await setupTestUser(newEmail, newUsername, password);

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { email, username, password } from '../utils/data.json';
-import { generateUniqueEmail, generateUniqueUsername } from '../helpers/dataGenerator';
+import { generateUniqueEmail, generateUniqueName } from '../helpers/dataGenerator';
 import { setupTestUser, cleanupTestUser, axiosInstance } from '../utils';
 import { TestUserSetup } from 'utils/types';
 import * as dotenv from 'dotenv';
@@ -10,7 +10,7 @@ describe('Authentication Tests', () => {
   const url = process.env.BASE_URL_LOCAL;
   let setupInfo: TestUserSetup;
   const newEmail = generateUniqueEmail(email);
-  const newUsername = generateUniqueUsername(username);
+  const newUsername = generateUniqueName(username);
 
   beforeAll(async () => {
     // Setting up a new user

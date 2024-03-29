@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
-import { DeleteResponse, TestUserSetup } from './types';
+import { DeleteResponse, IProduct, NewProductPayload, TestUserSetup } from './types';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -35,4 +35,17 @@ export const cleanupTestUser = async (userId: string, email: string, password: s
 
   const response = await axiosInstance.delete(`${url}/users/${userId}`);
   return response.data as DeleteResponse;
+};
+
+export const createProduct = async (productData: NewProductPayload): Promise<IProduct> => {
+  const response = await axiosInstance.post(`${url}/products`, productData);
+  return response.data;
+};
+
+export const updateProduct = async (productId: string, updateData: NewProductPayload): Promise<IProduct> => {
+  const response = await axiosInstance.patch(`${url}/products/${productId}`, updateData);
+  return response.data;
+};
+export const deleteProduct = async (productId: string) => {
+  await axiosInstance.delete(`${url}/products/${productId}`);
 };

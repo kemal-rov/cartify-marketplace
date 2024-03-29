@@ -80,3 +80,12 @@ export interface DeleteResponse {
   email: string;
   __v: number;
 }
+
+export interface NewProductPayload {
+  name: string,
+  description: string,
+  price: number,
+  stock: number,
+  categories: string[],
+  images: string[],
+};

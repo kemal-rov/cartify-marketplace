@@ -1,5 +1,13 @@
 {
     "email": "test1234@mail.io",
     "password": "123",
-    "username": "tester1234"
+    "username": "tester1234",
+    "product": {
+        "name": "Test Product",
+        "description": "A test product",
+        "price": 100,
+        "stock": 10,
+        "categories": ["TestCategory"],
+        "images": ["testImage.jpg"]
+      }
 }
