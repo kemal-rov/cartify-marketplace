@@ -1,0 +1,27 @@
+name: Integration Tests
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }} 
+      MONGO_KEY: ${{ secrets.MONGO_KEY }} 
+      BASE_URL_LOCAL: "http://localhost:8080"
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Start the application
+        run: |
+          npm start &
+          echo "The server has been started..."
+      
+      - name: Run integration tests
+        run: npm test
