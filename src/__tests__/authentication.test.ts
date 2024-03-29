@@ -1,54 +1,27 @@
 import axios from 'axios';
 import { email, username, password } from '../utils/data.json';
 import { generateUniqueEmail, generateUniqueUsername } from '../helpers/dataGenerator';
+import { setupTestUser, cleanupTestUser, axiosInstance } from '../utils';
+import { TestUserSetup } from 'utils/types';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { wrapper } from 'axios-cookiejar-support';
-import { CookieJar } from 'tough-cookie';
-
-// Wrap Axios instance with axios-cookiejar-support
-wrapper(axios);
-
-// Create a new cookie jar for an axios instance
-const cookieJar = new CookieJar();
-
-// Create an axios instance with cookie jar support
-const axiosInstance = axios.create({
-  withCredentials: true,
-});
-
-// Attach the cookie jar to the axios instance
-axiosInstance.defaults.jar = cookieJar;
-
 describe('Authentication Tests', () => {
   const url = process.env.BASE_URL_LOCAL;
-  let userId: string;
+  let setupInfo: TestUserSetup;
   const newEmail = generateUniqueEmail(email);
   const newUsername = generateUniqueUsername(username);
 
   beforeAll(async () => {
-    // Create a new user
-    const response = await axiosInstance.post(`${url}/auth/register`, {
-      email: newEmail,
-      password,
-      username: newUsername,
-    });
-
-    userId = response.data._id;
-
-    expect(response.status).toBe(200);
-    expect(response.data.email).toBe(newEmail);
+    // Use the utility function to setup a test user
+    setupInfo = await setupTestUser(newEmail, newUsername, password);
   });
 
   afterAll(async () => {
-    // First, log in as that user
-    await axiosInstance.post(`${url}/auth/login`, {email: newEmail, password});
-
-    // Then, delete the user
-    const deletedUser = await axiosInstance.delete(`${url}/users/${userId}`);
-
-    expect(deletedUser.data).not.toHaveProperty('authentication');
+    const deleteResponse = await cleanupTestUser(setupInfo.userId, newEmail, password);
+  
+    // Perform your assertion on the deleteResponse
+    expect(deleteResponse).not.toHaveProperty('authentication');
   });
 
   it('should reject duplicate user registration', async () => {
