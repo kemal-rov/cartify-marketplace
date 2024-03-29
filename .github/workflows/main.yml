@@ -1,9 +1,7 @@
 name: Integration Tests
 on: [push]
 jobs:
-
-
-  build-:
+  build:
     runs-on: ubuntu-latest
     env:
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }} 
@@ -23,12 +21,7 @@ jobs:
       - name: Start the application
         run: |
           npm start &
-          echo "Waiting for server to be ready..."
-         # $(curl --output /dev/null --silent --head --fail ${BASE_URL_LOCAL}); do
-         #     printf '.'
-         #     sleep 1
-         # done
-         # echo "Server is ready"
+          echo "The server has been started..."
       
       - name: Run integration tests
         run: npm test
