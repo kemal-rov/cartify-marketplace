@@ -13,14 +13,13 @@ describe('Authentication Tests', () => {
   const newUsername = generateUniqueUsername(username);
 
   beforeAll(async () => {
-    // Use the utility function to setup a test user
+    // Setting up a new user
     setupInfo = await setupTestUser(newEmail, newUsername, password);
   });
 
   afterAll(async () => {
+    // Delete the user
     const deleteResponse = await cleanupTestUser(setupInfo.userId, newEmail, password);
-  
-    // Perform your assertion on the deleteResponse
     expect(deleteResponse).not.toHaveProperty('authentication');
   });
 
