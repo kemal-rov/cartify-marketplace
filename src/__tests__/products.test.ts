@@ -25,11 +25,11 @@ describe('Product Tests', () => {
   afterAll(async () => {
     // Cleanup created product
     if (createdProduct && createdProduct._id) {
-        await deleteProduct(createdProduct._id.toString());
+      await deleteProduct(createdProduct._id.toString());
     }
 
     if (!productDeleted) {
-        await deleteProduct(productToDelete._id.toString());
+      await deleteProduct(productToDelete._id.toString());
     }
 
     // Cleanup test user
