@@ -46,7 +46,7 @@ export interface IOrderItem {
   priceAtPurchase: number;
 }
 
-export  interface IOrder {
+export interface IOrder {
   _id: mongoose.Types.ObjectId;
   user: mongoose.Types.ObjectId;
   items: IOrderItem[];
@@ -72,7 +72,7 @@ export interface LogoutResponse {
   user: string;
   message: string;
   timestamp: string;
-};
+}
 
 export interface DeleteResponse {
   _id: string;
@@ -82,10 +82,10 @@ export interface DeleteResponse {
 }
 
 export interface NewProductPayload {
-  name: string,
-  description: string,
-  price: number,
-  stock: number,
-  categories: string[],
-  images: string[],
-};
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  categories: string[];
+  images: string[];
+}

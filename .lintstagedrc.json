@@ -1,7 +1,7 @@
 {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "./safe-lint-fix.sh",
+      "./safe-prettier-fix.sh"
     ]
   }
   

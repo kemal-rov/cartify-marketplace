@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { email, username, password } from '../utils/data.json';
-import { generateUniqueEmail, generateUniqueName } from '../helpers/dataGenerator';
+import {
+  generateUniqueEmail,
+  generateUniqueName,
+} from '../helpers/dataGenerator';
 import { setupTestUser, cleanupTestUser, axiosInstance } from '../utils';
 import { TestUserSetup } from 'utils/types';
 import * as dotenv from 'dotenv';
@@ -19,7 +22,11 @@ describe('Authentication Tests', () => {
 
   afterAll(async () => {
     // Delete the user
-    const deleteResponse = await cleanupTestUser(setupInfo.userId, newEmail, password);
+    const deleteResponse = await cleanupTestUser(
+      setupInfo.userId,
+      newEmail,
+      password,
+    );
     expect(deleteResponse).not.toHaveProperty('authentication');
   });
 
@@ -86,7 +93,10 @@ describe('Authentication Tests', () => {
 
   it('should logout the user', async () => {
     // Ensure there's a session to logout from by logging in first
-    await axiosInstance.post(`${url}/auth/login`, { email: newEmail, password });
+    await axiosInstance.post(`${url}/auth/login`, {
+      email: newEmail,
+      password,
+    });
 
     const logoutResponse = await axiosInstance.post(`${url}/auth/logout`);
     expect(logoutResponse.status).toBe(200);

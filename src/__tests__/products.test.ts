@@ -1,6 +1,17 @@
 import { email, username, password } from '../utils/data.json';
-import { generateUniqueEmail, generateUniqueName, generateUniqueProduct } from '../helpers/dataGenerator';
-import { setupTestUser, cleanupTestUser, createProduct, updateProduct, getProduct, deleteProduct } from '../utils';
+import {
+  generateUniqueEmail,
+  generateUniqueName,
+  generateUniqueProduct,
+} from '../helpers/dataGenerator';
+import {
+  setupTestUser,
+  cleanupTestUser,
+  createProduct,
+  updateProduct,
+  getProduct,
+  deleteProduct,
+} from '../utils';
 import { IProduct, NewProductPayload, TestUserSetup } from 'utils/types';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -39,7 +50,7 @@ describe('Product Tests', () => {
   it('should create and retrieve a product correctly', async () => {
     const productData = generateUniqueProduct();
     const createdProduct = await createProduct(productData);
-  
+
     // Fetch the product to verify its creation
     const fetchedProduct = await getProduct(createdProduct._id.toString());
     expect(fetchedProduct.name).toEqual(productData.name);
@@ -47,9 +58,13 @@ describe('Product Tests', () => {
   });
 
   it('should update a product correctly', async () => {
-    const updateData = {...createdProduct, name: "Updated Product Name", price: 250 };
+    const updateData = {
+      ...createdProduct,
+      name: 'Updated Product Name',
+      price: 250,
+    };
     await updateProduct(createdProduct._id.toString(), updateData);
-  
+
     // Fetch the product to verify the update
     const updatedProduct = await getProduct(createdProduct._id.toString());
     expect(updatedProduct.name).toEqual(updateData.name);
@@ -57,9 +72,12 @@ describe('Product Tests', () => {
   });
 
   it('should delete a product correctly', async () => {
-    productToDelete = await createProduct({...newProduct, name: "Product to Delete"});
+    productToDelete = await createProduct({
+      ...newProduct,
+      name: 'Product to Delete',
+    });
     await deleteProduct(productToDelete._id.toString());
-  
+
     // Attempt to fetch the product to verify it's been deleted
     await expect(getProduct(productToDelete._id.toString())).rejects.toThrow();
 
@@ -67,3 +85,4 @@ describe('Product Tests', () => {
     productDeleted = true;
   });
 });
+// intentional error

@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
-import { DeleteResponse, IProduct, NewProductPayload, TestUserSetup } from './types';
+import {
+  DeleteResponse,
+  IProduct,
+  NewProductPayload,
+  TestUserSetup,
+} from './types';
 import * as dotenv from 'dotenv';
 import { getProductDetails } from '../controllers/products';
 import { getProductById } from '../db/products';
@@ -12,7 +17,11 @@ wrapper(axiosInstance);
 
 const url = process.env.BASE_URL_LOCAL;
 
-export const setupTestUser = async (email: string, username: string, password: string): Promise<TestUserSetup> => {
+export const setupTestUser = async (
+  email: string,
+  username: string,
+  password: string,
+): Promise<TestUserSetup> => {
   const cookieJar = new CookieJar();
   axiosInstance.defaults.jar = cookieJar;
 
@@ -32,14 +41,20 @@ export const setupTestUser = async (email: string, username: string, password: s
   return { userId, cookieJar };
 };
 
-export const cleanupTestUser = async (userId: string, email: string, password: string): Promise<DeleteResponse> => {
+export const cleanupTestUser = async (
+  userId: string,
+  email: string,
+  password: string,
+): Promise<DeleteResponse> => {
   await axiosInstance.post(`${url}/auth/login`, { email, password });
 
   const response = await axiosInstance.delete(`${url}/users/${userId}`);
   return response.data as DeleteResponse;
 };
 
-export const createProduct = async (productData: NewProductPayload): Promise<IProduct> => {
+export const createProduct = async (
+  productData: NewProductPayload,
+): Promise<IProduct> => {
   const response = await axiosInstance.post(`${url}/products`, productData);
   return response.data;
 };
@@ -49,8 +64,14 @@ export const getProduct = async (productId: string) => {
   return response.data;
 };
 
-export const updateProduct = async (productId: string, updateData: NewProductPayload): Promise<IProduct> => {
-  const response = await axiosInstance.patch(`${url}/products/${productId}`, updateData);
+export const updateProduct = async (
+  productId: string,
+  updateData: NewProductPayload,
+): Promise<IProduct> => {
+  const response = await axiosInstance.patch(
+    `${url}/products/${productId}`,
+    updateData,
+  );
   return response.data;
 };
 
