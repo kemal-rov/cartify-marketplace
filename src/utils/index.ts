@@ -3,6 +3,8 @@ import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
 import { DeleteResponse, IProduct, NewProductPayload, TestUserSetup } from './types';
 import * as dotenv from 'dotenv';
+import { getProductDetails } from '../controllers/products';
+import { getProductById } from '../db/products';
 dotenv.config();
 
 export const axiosInstance = axios.create({ withCredentials: true });
@@ -42,10 +44,16 @@ export const createProduct = async (productData: NewProductPayload): Promise<IPr
   return response.data;
 };
 
+export const getProduct = async (productId: string) => {
+  const response = await axiosInstance.get(`${url}/products/${productId}`);
+  return response.data;
+};
+
 export const updateProduct = async (productId: string, updateData: NewProductPayload): Promise<IProduct> => {
   const response = await axiosInstance.patch(`${url}/products/${productId}`, updateData);
   return response.data;
 };
+
 export const deleteProduct = async (productId: string) => {
   await axiosInstance.delete(`${url}/products/${productId}`);
 };
