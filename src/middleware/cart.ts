@@ -31,7 +31,6 @@ export const validateCartOperation =
       );
 
       if (!itemExists) {
-        console.log('productid from middleware:', productId);
         return res.status(404).json({ message: 'Item not found in cart.' });
       }
     }
