@@ -16,7 +16,7 @@ export interface IProduct {
 }
 
 export interface ICartItem {
-  product: mongoose.Types.ObjectId;
+  productId: string;
   quantity: number;
 }
 
@@ -27,6 +27,8 @@ export interface ICart {
   created_at: Date;
   updated_at: Date;
 }
+
+export type ICartResponse = ICart | MessageResponse;
 
 export interface IUser {
   _id: mongoose.Types.ObjectId;
@@ -88,4 +90,17 @@ export interface NewProductPayload {
   stock: number;
   categories: string[];
   images: string[];
+}
+
+export interface QuantityObject {
+  quantity: number;
+}
+
+export interface MessageResponse {
+  message: string;
+}
+
+export interface CartAlreadyExists {
+  message: string;
+  cart: ICart;
 }

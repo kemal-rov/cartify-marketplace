@@ -15,8 +15,7 @@ export const verifyUserMatch = async (
         .json({ message: 'Unauthorized - user id is missing.' });
     } else if (userIdFromPath !== userId) {
       return res.status(403).json({
-        message:
-          'Forbidden - You do not have permission to access this resource.',
+        message: 'Forbidden',
       });
     }
 

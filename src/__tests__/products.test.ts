@@ -39,6 +39,7 @@ describe('Product Tests', () => {
       await deleteProduct(createdProduct._id.toString());
     }
 
+    // Cleanup product from deletion test case
     if (!productDeleted) {
       await deleteProduct(productToDelete._id.toString());
     }

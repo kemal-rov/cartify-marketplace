@@ -56,7 +56,7 @@ export const validateOrderAgainstCart = async (
 
   const cartItemsMap = cart.items.reduce(
     (acc: Record<string, number>, item: ICartItem) => {
-      acc[item.product.toString()] = item.quantity;
+      acc[item.productId.toString()] = item.quantity;
       return acc;
     },
     {},

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const CartItemSchema = new mongoose.Schema({
-  product: {
+  productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
     required: true,
@@ -36,13 +36,13 @@ export const addItemToCart = async (
     new CartModel({ user: userId, items: [] });
 
   const itemIndex = cart.items.findIndex(
-    (item) => item.product.toString() === productId,
+    (item) => item.productId.toString() === productId,
   );
 
   if (itemIndex > -1) {
     cart.items[itemIndex].quantity += quantity;
   } else {
-    cart.items.push({ product: productId, quantity });
+    cart.items.push({ productId, quantity });
   }
 
   cart.updated_at = new Date();
@@ -54,7 +54,7 @@ export const removeItemFromCart = async (userId: string, productId: string) => {
 
   if (!cart) return;
 
-  cart.items.pull({ product: productId });
+  cart.items.pull({ productId });
   cart.updated_at = new Date();
   await cart.save();
 
@@ -74,7 +74,9 @@ export const updateItemQuantity = async (
   const cart = await getCartByUserId(userId);
   if (!cart) throw new Error('Cart not found');
 
-  const item = cart.items.find((item) => item.product.toString() === productId);
+  const item = cart.items.find(
+    (item) => item.productId.toString() === productId,
+  );
   if (!item) throw new Error('Item not found in cart');
 
   item.quantity = newQuantity;
