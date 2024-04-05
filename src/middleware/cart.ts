@@ -27,10 +27,11 @@ export const validateCartOperation =
     // Check if the item exists in the cart if required
     if (checkItemExists && productId) {
       const itemExists = cart.items.some(
-        (item) => item.product.toString() === productId,
+        (item) => item.productId.toString() === productId,
       );
 
       if (!itemExists) {
+        console.log('productid from middleware:', productId);
         return res.status(404).json({ message: 'Item not found in cart.' });
       }
     }

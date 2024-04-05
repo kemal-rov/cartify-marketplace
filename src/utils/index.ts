@@ -5,11 +5,15 @@ import {
   DeleteResponse,
   IProduct,
   NewProductPayload,
+  QuantityObject,
   TestUserSetup,
+  ICartItem,
+  ICart,
+  MessageResponse,
+  CartAlreadyExists,
+  ICartResponse,
 } from './types';
 import * as dotenv from 'dotenv';
-import { getProductDetails } from '../controllers/products';
-import { getProductById } from '../db/products';
 dotenv.config();
 
 export const axiosInstance = axios.create({ withCredentials: true });
@@ -75,6 +79,61 @@ export const updateProduct = async (
   return response.data;
 };
 
-export const deleteProduct = async (productId: string) => {
-  await axiosInstance.delete(`${url}/products/${productId}`);
+export const deleteProduct = async (
+  productId: string,
+): Promise<MessageResponse> => {
+  const response = await axiosInstance.delete(`${url}/products/${productId}`);
+  return response.data;
+};
+
+export const createCart = async (
+  userId: string,
+): Promise<ICart | CartAlreadyExists> => {
+  const response = await axiosInstance.post(`${url}/users/${userId}/cart`);
+  return response.data;
+};
+
+export const getCart = async (userId: string): Promise<ICartResponse> => {
+  const response = await axiosInstance(`${url}/users/${userId}/cart`);
+  return response.data;
+};
+
+export const addItemToCart = async (
+  userId: string,
+  createData: ICartItem,
+): Promise<ICart> => {
+  const response = await axiosInstance.post(
+    `${url}/users/${userId}/cart/items`,
+    createData,
+  );
+  return response.data;
+};
+
+export const updateQuantity = async (
+  userId: string,
+  productId: string,
+  updateData: QuantityObject,
+): Promise<ICart> => {
+  const response = await axiosInstance.patch(
+    `${url}/users/${userId}/cart/items/${productId}`,
+    updateData,
+  );
+  return response.data;
+};
+
+export const removeCartItem = async (
+  userId: string,
+  productId: string,
+): Promise<ICart> => {
+  const response = await axiosInstance.delete(
+    `${url}/users/${userId}/cart/items/:${productId}`,
+  );
+  return response.data;
+};
+
+export const clearUserCart = async (
+  userId: string,
+): Promise<MessageResponse> => {
+  const clearedCart = await axiosInstance.delete(`${url}/users/${userId}/cart`);
+  return clearedCart.data;
 };
