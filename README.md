@@ -74,11 +74,23 @@ npm start
 
 This will launch the Cartify Marketplace backend on the specified port, ready to accept requests.
 
-### Testing
+## Testing
 
-> to be added
+This project includes a suite of integration tests implemented using Jest and Axios to ensure that the application behaves as expected when interfacing with external services, like a MongoDB database. These tests are located in the `__tests__` directory and cover various aspects of the application, including authentication, user management, and product operations.
 
-> **Important warning:** For the application to connect to your MongoDB database correctly, you must provide your own MongoDB URI in the .env file and use it in your constants as shown above. Failure to do so will result in database connection errors. If you need assistance with setting up your MongoDB cluster or configuring your project, feel free to reach out to the project maintainer.
+To run these tests, you will need to ensure that your environment is correctly configured:
+
+1. **MongoDB Connection**: Make sure to provide your own MongoDB URI in the `.env` file for the application to connect to your database correctly. This URI must also be used in your constants as shown previously in the documentation. Failure to configure this correctly will result in database connection errors.
+
+2. **Environment Variables**: Ensure all necessary environment variables are set up as required by the tests, including `BASE_URL_LOCAL` for local server operations.
+
+3. **Running Tests**: Execute the tests by running `npm test` or `yarn test` from your command line.
+
+### Important Warning
+
+For the application to connect to your MongoDB database correctly, you must provide your own MongoDB URI in the `.env` file and use it in your constants as previously indicated. If you need assistance with setting up your MongoDB cluster or configuring your project, please reach out to the project maintainer.
+
+Feel free to review the test files under the `__tests__` folder to understand the coverage and scenarios tested.
 
 ## API Documentation
 
