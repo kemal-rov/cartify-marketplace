@@ -8,9 +8,9 @@ jobs:
     steps:
       - name: Create .env file
         run: |
-          echo "SECRET_1=${{ secrets.SECRET_1 }}" >> .env
-          echo "SECRET_2=${{ secrets.SECRET_2 }}" >> .env
-          echo "SECRET_3=${{ secrets.SECRET_3 }}" >> .env
+          echo "AUTH_SECRET=${{ secrets.AUTH_SECRET }}" >> .env
+          echo "BASE_URL_LOCAL=${{ secrets.BASE_URL_LOCAL }}" >> .env
+          echo "MONGO_KEY=${{ secrets.MONGO_KEY }}" >> .env
       - name: Upload .env file as artifact
         uses: actions/upload-artifact@v3
         with:
