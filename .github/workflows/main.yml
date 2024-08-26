@@ -31,6 +31,7 @@ jobs:
       - name: Start the application
         run: |
           npm start &
+          echo $! > server.pid
           echo "Waiting for the server to start..."
           until curl -s ${{ secrets.BASE_URL_LOCAL }}/healthcheck; do
             sleep 5
@@ -41,11 +42,12 @@ jobs:
         run: npm test
 
       - name: Stop the application
+        if: always()
         run: |
-          PID=$(lsof -t -i:3000)
-          if [ -n "$PID" ]; then
-            kill $PID
-            echo "Server process $PID has been terminated."
+          if [ -f server.pid ]; then
+            kill $(cat server.pid)
+            echo "Server process has been terminated."
+            rm server.pid
           else
-            echo "No process found on port 3000."
+            echo "No server PID found. Skipping termination."
           fi
