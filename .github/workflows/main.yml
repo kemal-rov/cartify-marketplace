@@ -39,6 +39,13 @@ jobs:
       
       - name: Run integration tests
         run: npm test
-        
+
       - name: Stop the application
-        run: kill $(lsof -t -i:3000)
+        run: |
+          PID=$(lsof -t -i:3000)
+          if [ -n "$PID" ]; then
+            kill $PID
+            echo "Server process $PID has been terminated."
+          else
+            echo "No process found on port 3000."
+          fi
