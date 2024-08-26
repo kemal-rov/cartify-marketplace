@@ -9,7 +9,10 @@ interface PaymentDetail {
   paymentDate: Date;
 }
 
-interface PaymentDocument extends Document, PaymentDetail {}
+interface PaymentDocument extends Document, PaymentDetail {
+  orderId: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
+}
 
 const PaymentSchema = new mongoose.Schema({
   orderId: {

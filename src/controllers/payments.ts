@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPayment, getPaymentsByUserId } from '../db/payments';
+import { createPayment, getPaymentsByUserId, getPaymentById } from '../db/payments';
 
 export const createPaymentController = async (
   req: express.Request,
@@ -33,9 +33,20 @@ export const getUserPaymentsController = async (
 ) => {
   try {
     const userId = (req as any).identity._id;
-    const payments = await getPaymentsByUserId(userId);
+    const { paymentId } = req.params;
 
-    res.json(payments);
+    if (paymentId) {
+      // Fetch a specific payment by ID
+      const payment = await getPaymentById(paymentId);
+      if (!payment || payment.userId.toString() !== userId.toString()) {
+        return res.status(403).json({ message: 'Forbidden: You cannot access this payment.' });
+      }
+      return res.json(payment);
+    } else {
+      // Fetch all payments for the current user
+      const payments = await getPaymentsByUserId(userId);
+      res.json(payments);
+    }
   } catch (error) {
     console.error('Get User Payments Error:', error);
     res.status(500).json({ message: 'Failed to retrieve payments.' });
