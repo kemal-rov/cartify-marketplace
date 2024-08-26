@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPayment, getPaymentsByUserId, getPaymentById } from '../db/payments';
+import { createPayment, getPaymentsByUserId, getPaymentById, updatePaymentStatus, recordTransactionId, deletePaymentById } from '../db/payments';
 
 export const createPaymentController = async (
   req: express.Request,
@@ -50,5 +50,40 @@ export const getUserPaymentsController = async (
   } catch (error) {
     console.error('Get User Payments Error:', error);
     res.status(500).json({ message: 'Failed to retrieve payments.' });
+  }
+};
+
+export const updatePaymentController = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  try {
+    const { paymentId } = req.params;
+    const { status, transactionId } = req.body;
+
+    const updatedPayment = await updatePaymentStatus(paymentId, status);
+    if (transactionId) {
+      await recordTransactionId(paymentId, transactionId);
+    }
+
+    res.json(updatedPayment);
+  } catch (error) {
+    console.error('Update Payment Error:', error);
+    res.status(500).json({ message: 'Failed to update payment.' });
+  }
+};
+
+export const deletePaymentController = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  try {
+    const { paymentId } = req.params;
+    await deletePaymentById(paymentId);
+
+    res.sendStatus(204); // No content
+  } catch (error) {
+    console.error('Delete Payment Error:', error);
+    res.status(500).json({ message: 'Failed to delete payment.' });
   }
 };
