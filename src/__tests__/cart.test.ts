@@ -27,7 +27,7 @@ import * as dotenv from 'dotenv';
 import { userInfo } from 'os';
 dotenv.config();
 
-describe('Product Tests', () => {
+describe('Cart Tests', () => {
   let setupInfo: TestUserSetup;
   let createdProduct: IProduct;
   const newEmail = generateUniqueEmail(email);
