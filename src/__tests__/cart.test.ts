@@ -24,7 +24,6 @@ import {
   TestUserSetup,
 } from 'utils/types';
 import * as dotenv from 'dotenv';
-import { userInfo } from 'os';
 dotenv.config();
 
 describe('Cart Tests', () => {
