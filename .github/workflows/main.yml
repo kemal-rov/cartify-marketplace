@@ -31,7 +31,11 @@ jobs:
       - name: Start the application
         run: |
           npm start &
-          echo "The server has been started..."
+          echo "Waiting for the server to start..."
+          until curl -s ${{ secrets.BASE_URL_LOCAL }}/healthcheck; do
+            sleep 5
+          done
+          echo "The server is ready!"
       
       - name: Run integration tests
         run: npm test
