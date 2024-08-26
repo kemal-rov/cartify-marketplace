@@ -39,3 +39,6 @@ jobs:
       
       - name: Run integration tests
         run: npm test
+        
+      - name: Stop the application
+        run: kill $(lsof -t -i:3000)
