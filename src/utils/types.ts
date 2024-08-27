@@ -42,6 +42,14 @@ export interface IUser {
   cart: mongoose.Types.ObjectId;
 }
 
+// A more restricted user interface for use in requests
+export interface IUserWithoutAuth {
+  _id: mongoose.Types.ObjectId;
+  username: string;
+  email: string;
+  cart: mongoose.Types.ObjectId;
+}
+
 export interface IOrderItem {
   product: mongoose.Types.ObjectId | string;
   quantity: number;

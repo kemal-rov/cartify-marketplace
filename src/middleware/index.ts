@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import { get, merge } from 'lodash';
 import { getUserBySessionToken } from '../db/users';
 
@@ -9,13 +10,13 @@ export const isOwner = async (
 ) => {
   try {
     const { id } = req.params;
-    const currentUserId = get(req, 'identity._id') as string;
+    const currentUserId = get(req, 'identity._id') as mongoose.Types.ObjectId | undefined;
 
     if (!currentUserId) {
       return res.sendStatus(403);
     }
 
-    if (currentUserId.toString() != id) {
+    if (currentUserId.toString() !== id) {
       return res.sendStatus(403);
     }
 
