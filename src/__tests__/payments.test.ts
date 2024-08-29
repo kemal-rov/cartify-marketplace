@@ -1,5 +1,5 @@
 import { axiosInstance, setupTestUser, cleanupTestUser } from "../utils";
-import { generateUniqueEmail, generateUniqueName } from "helpers/dataGenerator";
+import { generateUniqueEmail, generateUniqueName } from "../helpers/dataGenerator";
 import { email, username, password } from '../utils/data.json';
 import { TestUserSetup } from "utils/types";
 import { PaymentMethod } from "utils/enums";
