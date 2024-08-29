@@ -32,7 +32,7 @@ export const getUserPaymentsController = async (
   res: express.Response,
 ) => {
   try {
-    const userId = (req as any).identity._id;
+    const userId = req.identity._id.toString();
     const { paymentId } = req.params;
 
     if (paymentId) {

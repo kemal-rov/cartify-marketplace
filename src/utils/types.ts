@@ -30,15 +30,17 @@ export interface ICart {
 
 export type ICartResponse = ICart | MessageResponse;
 
+export interface UserAuthentication {
+  password: string;
+  salt: string;
+  sessionToken: string;
+}
+
 export interface IUser {
   _id: mongoose.Types.ObjectId;
   username: string;
   email: string;
-  authentication: {
-    password: string;
-    salt: string;
-    sessionToken: string;
-  };
+  authentication: UserAuthentication;
   cart: mongoose.Types.ObjectId;
 }
 
