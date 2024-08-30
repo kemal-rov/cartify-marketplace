@@ -1,26 +1,26 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { ICartItem, IOrderItem } from '../utils/types';
+import { ICartItem, IOrderItem, IExtendedRequest } from '../utils/types';
 import { getCartByUserId } from '../db/cart';
 import { Order, getOrderById } from '../db/orders';
 
 export const attachUserCart = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
   next: express.NextFunction,
 ) => {
-  const userId = (req as any).identity._id;
+  const userId = req.identity._id;
 
   if (!userId) {
     return res.status(400).json({ message: 'User ID is missing.' });
   }
 
   try {
-    const cart = await getCartByUserId(userId);
+    const cart = await getCartByUserId(userId.toString());
     if (!cart || !cart.items) {
       return res.status(404).json({ message: 'Cart not found or empty.' });
     }
-    (req as any).cart = cart;
+    req.cart = cart;
 
     next();
   } catch (error) {
@@ -32,7 +32,7 @@ export const attachUserCart = async (
 };
 
 export const validateOrderAgainstCart = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
   next: express.NextFunction,
 ) => {
@@ -52,7 +52,7 @@ export const validateOrderAgainstCart = async (
     orderItems = order.items;
   }
 
-  const cart = (req as any).cart;
+  const cart = req.cart;
 
   const cartItemsMap = cart.items.reduce(
     (acc: Record<string, number>, item: ICartItem) => {
@@ -81,7 +81,7 @@ export const validateOrderAgainstCart = async (
 };
 
 export const validateOrderUpdate = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
   next: express.NextFunction,
 ) => {
@@ -132,7 +132,7 @@ export const validateOrderUpdate = async (
     }
 
     // Attach order to the request object
-    (req as any).order = order;
+    req.order = order as any;
 
     next();
   } catch (error) {

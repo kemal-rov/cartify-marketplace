@@ -1,9 +1,9 @@
-import { IUserWithoutAuth } from "./types";
+import { IUser } from "./types";
 
 declare global {
   namespace Express {
     interface Request {
-      identity?: IUserWithoutAuth;
+      identity?: IUser;
     }
   }
 }

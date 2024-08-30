@@ -1,8 +1,9 @@
 import express from 'express';
 import { getUserByEmail, createUser } from '../db/users';
 import { random, authentication } from '../helpers';
+import { IExtendedRequest, UserAuthentication } from 'utils/types';
 
-export const login = async (req: express.Request, res: express.Response) => {
+export const login = async (req: IExtendedRequest, res: express.Response) => {
   try {
     const { email, password } = req.body;
 
@@ -49,7 +50,7 @@ export const login = async (req: express.Request, res: express.Response) => {
 
 export const logout = async (req: express.Request, res: express.Response) => {
   try {
-    const user = (req as any).identity;
+    const user = (req as IExtendedRequest).identity;
 
     user.authentication.sessionToken = ''; // Invalidate token
     await user.save();

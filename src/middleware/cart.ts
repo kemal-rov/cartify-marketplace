@@ -1,10 +1,11 @@
 import express from 'express';
 import { getCartByUserId } from '../db/cart';
+import { IExtendedRequest } from 'utils/types';
 
 export const validateCartOperation =
   ({ checkQuantity = false, checkItemExists = false } = {}) =>
   async (
-    req: express.Request,
+    req: IExtendedRequest,
     res: express.Response,
     next: express.NextFunction,
   ) => {

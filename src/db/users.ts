@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { IUserDocument } from 'utils/types';
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true },
@@ -11,7 +12,7 @@ const UserSchema = new mongoose.Schema({
   cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart' },
 });
 
-export const UserModel = mongoose.model('User', UserSchema);
+export const UserModel = mongoose.model<IUserDocument>('User', UserSchema);
 
 export const getUsers = () => UserModel.find();
 export const getUserByEmail = (email: string) => UserModel.findOne({ email });

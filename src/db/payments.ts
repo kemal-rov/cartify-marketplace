@@ -45,7 +45,7 @@ export const Payment = mongoose.model<PaymentDocument>(
 export const getAllPayments = () => Payment.find();
 export const getPaymentById = (id: string) => Payment.findById(id);
 export const getPaymentsByUserId = (userId: string) =>
-  Payment.find({ user: userId });
+  Payment.find({ userId });
 
 export const createPayment = (values: Record<string, any>) =>
   new Payment(values).save();

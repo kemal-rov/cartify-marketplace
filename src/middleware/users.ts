@@ -1,13 +1,14 @@
 import express from 'express';
+import { IExtendedRequest } from 'utils/types';
 
 export const verifyUserMatch = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
   next: express.NextFunction,
 ) => {
   try {
     const userIdFromPath = req.params.userId;
-    const userId = (req as any).identity?._id.toString();
+    const userId = req.identity?._id.toString();
 
     if (!userId) {
       return res

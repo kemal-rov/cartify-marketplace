@@ -1,28 +1,35 @@
-import mongoose from 'mongoose';
+import express from 'express';
+import { Types, Document } from 'mongoose';
 import { OrderStatus, PaymentMethod } from './enums';
 import { CookieJar } from 'tough-cookie';
 
+export interface IExtendedRequest extends express.Request {
+  identity?: IUserDocument; 
+  cart?: ICartDocument;
+  order?: IOrderDocument;
+}
+
 export interface IProduct {
-  _id: mongoose.Types.ObjectId;
+  _id: Types.ObjectId;
   name: string;
   description: string;
   price: number;
   stock: number;
   categories: string[];
   images: string[];
-  created_by: mongoose.Types.ObjectId;
+  created_by: Types.ObjectId;
   created_at: Date;
   updated_at: Date;
 }
 
 export interface ICartItem {
-  productId: string;
+  productId: Types.ObjectId;
   quantity: number;
 }
 
 export interface ICart {
-  _id: mongoose.Types.ObjectId;
-  user: mongoose.Types.ObjectId;
+  _id: Types.ObjectId;
+  user: Types.ObjectId;
   items: ICartItem[];
   created_at: Date;
   updated_at: Date;
@@ -30,37 +37,44 @@ export interface ICart {
 
 export type ICartResponse = ICart | MessageResponse;
 
+export interface ICartDocument extends Document<Types.ObjectId>, ICart {}
+
+
+// Interface representing user authentication details
 export interface UserAuthentication {
   password: string;
   salt: string;
   sessionToken: string;
 }
 
-export interface IUser {
-  _id: mongoose.Types.ObjectId;
+// Common fields for user data
+interface IUserBase {
+  _id: Types.ObjectId;
   username: string;
   email: string;
+  cart: Types.ObjectId;
+}
+
+// Full user interface including authentication details
+export interface IUser extends IUserBase {
   authentication: UserAuthentication;
-  cart: mongoose.Types.ObjectId;
 }
 
 // A more restricted user interface for use in requests
-export interface IUserWithoutAuth {
-  _id: mongoose.Types.ObjectId;
-  username: string;
-  email: string;
-  cart: mongoose.Types.ObjectId;
-}
+export interface IUserWithoutAuth extends IUserBase {}
+
+// Mongoose document interface with potential for additional methods
+export interface IUserDocument extends Document<Types.ObjectId>, IUser {}
 
 export interface IOrderItem {
-  product: mongoose.Types.ObjectId | string;
+  product: Types.ObjectId | string;
   quantity: number;
   priceAtPurchase: number;
 }
 
 export interface IOrder {
-  _id: mongoose.Types.ObjectId;
-  user: mongoose.Types.ObjectId;
+  _id: Types.ObjectId;
+  user: Types.ObjectId;
   items: IOrderItem[];
   total: number;
   status: OrderStatus;
@@ -74,6 +88,9 @@ export interface IOrder {
     zip: string;
   };
 }
+
+export interface IOrderDocument extends Document<Types.ObjectId>, IOrder {}
+
 
 export interface TestUserSetup {
   userId: string;

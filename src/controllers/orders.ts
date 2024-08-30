@@ -2,13 +2,15 @@ import express from 'express';
 import { Order } from '../db/orders';
 import { getProductById } from '../db/products';
 import { IOrderItem } from '../utils/types';
+import { IExtendedRequest } from '../utils/types';
+import { OrderStatus } from '../utils/enums';
 
 export const getUserOrdersController = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
 ) => {
   try {
-    const userId = (req as any).identity._id;
+    const userId = req.identity._id;
 
     const userOrders = await Order.find({ user: userId }).populate(
       'items.product',
@@ -28,12 +30,12 @@ export const getUserOrdersController = async (
 };
 
 export const getOrderByIdController = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
 ) => {
   try {
     const { orderId } = req.params;
-    const userId = (req as any).identity._id;
+    const userId = req.identity._id;
 
     const order = await Order.findById(orderId).populate('items.product');
 
@@ -80,7 +82,7 @@ export const createOrder = async (
       total,
       paymentMethod,
       shippingAddress,
-      status: 'pending', // Default status
+      status: OrderStatus.Pending, // Default status
     });
 
     return res.status(201).json(newOrder);

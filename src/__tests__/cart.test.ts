@@ -117,8 +117,8 @@ describe('Cart Tests', () => {
   });
 
   it('should add existing product to cart', async () => {
-    const cartItemPayload = { productId: createdProductId, quantity: 1 };
-    const cart = await addItemToCart(setupInfo.userId, cartItemPayload);
+    const cartItemPayload = { productId: createdProductId, quantity: 1};
+    const cart = await addItemToCart(setupInfo.userId, cartItemPayload as unknown as ICartItem);
 
     expect(cart).toBeDefined();
     expect(cart.items.length).toBe(1);

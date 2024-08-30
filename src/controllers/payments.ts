@@ -1,5 +1,6 @@
 import express from 'express';
 import { createPayment, getPaymentsByUserId, getPaymentById, updatePaymentStatus, recordTransactionId, deletePaymentById } from '../db/payments';
+import { IExtendedRequest } from 'utils/types';
 
 export const createPaymentController = async (
   req: express.Request,
@@ -28,11 +29,11 @@ export const createPaymentController = async (
 };
 
 export const getUserPaymentsController = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
 ) => {
   try {
-    const userId = req.identity._id.toString();
+    const userId = req.identity._id;
     const { paymentId } = req.params;
 
     if (paymentId) {
@@ -44,7 +45,7 @@ export const getUserPaymentsController = async (
       return res.json(payment);
     } else {
       // Fetch all payments for the current user
-      const payments = await getPaymentsByUserId(userId);
+      const payments = await getPaymentsByUserId(userId.toString());
       res.json(payments);
     }
   } catch (error) {
