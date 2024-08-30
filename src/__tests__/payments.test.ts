@@ -2,6 +2,7 @@ import { axiosInstance, setupTestUser, cleanupTestUser } from "../utils";
 import { generateUniqueEmail, generateUniqueName } from "../helpers/dataGenerator";
 import { email, username, password } from '../utils/data.json';
 import { TestUserSetup } from "utils/types";
+import { Types } from "mongoose";
 import { PaymentMethod } from "utils/enums";
 
 describe('Payment Tests', () => {
@@ -23,11 +24,13 @@ describe('Payment Tests', () => {
     });
 
     it('should create a payment for test user', async () => {
+        const validObjectId = new Types.ObjectId();
+
         const paymentData = {
-            orderId: 'testId',
+            orderId: validObjectId,
             amount: 100,
             currency: 'USD',
-            PaymentMethod: 'credit_card',
+            method: 'credit_card',
         };
 
         const response = await axiosInstance.post(

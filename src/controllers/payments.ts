@@ -3,12 +3,12 @@ import { createPayment, getPaymentsByUserId, getPaymentById, updatePaymentStatus
 import { IExtendedRequest } from 'utils/types';
 
 export const createPaymentController = async (
-  req: express.Request,
+  req: IExtendedRequest,
   res: express.Response,
 ) => {
   try {
     const { orderId, method, amount, transactionId, payerId } = req.body;
-    const userId = (req as any).identity._id;
+    const userId = req.identity._id;
 
     const payment = await createPayment({
       orderId,
