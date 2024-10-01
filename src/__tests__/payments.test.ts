@@ -3,7 +3,6 @@ import { generateUniqueEmail, generateUniqueName } from "../helpers/dataGenerato
 import { email, username, password } from '../utils/data.json';
 import { TestUserSetup } from "utils/types";
 import { Types } from "mongoose";
-import { PaymentMethod } from "utils/enums";
 
 describe('Payment Tests', () => {
     let setupInfo: TestUserSetup;
